@@ -209,3 +209,34 @@ Kelas   : PBP D
       );
     }
     ```
+
+
+# Tugas 8
+
+1. **Apa kegunaan `const` di Flutter?**
+
+   **Jawab:**  
+   `const` digunakan untuk membuat objek yang immutable (tidak berubah). Keuntungannya adalah peningkatan performa dan efisiensi memori karena objek `const` hanya dibuat sekali dan disimpan dalam cache. Sebaiknya gunakan `const` pada elemen yang tidak akan berubah selama aplikasi berjalan, seperti teks atau ikon statis. Namun, hindari penggunaan `const` pada elemen yang membutuhkan perubahan data atau reaktivitas.
+
+2. **Jelaskan dan bandingkan penggunaan `Column` dan `Row` pada Flutter.**
+
+   **Jawab:**  
+   * **Column** menyusun widget secara vertikal (dari atas ke bawah), ideal untuk daftar elemen atau form yang memanjang ke bawah.
+   * **Row** menyusun widget secara horizontal (dari kiri ke kanan), cocok untuk elemen yang berdampingan seperti ikon dan teks dalam satu baris.  
+   * **Perbandingan**: `Column` berfungsi untuk layout vertikal, sedangkan `Row` untuk layout horizontal. Keduanya bisa menyebabkan overflow jika jumlah elemen terlalu banyak pada sumbu masing-masing sehingga tidak sesuai dengan ruang layar.
+
+3. **Apa saja elemen input yang kamu gunakan pada halaman form yang kamu buat pada tugas ini?**
+
+   **Jawab:**  
+   Digunakan **TextFormField** untuk menerima input teks dan **ElevatedButton** untuk submit data. Elemen input lain, seperti **Checkbox** untuk pilihan berganda dan **Slider** untuk memilih nilai dalam rentang tertentu, tidak digunakan karena tidak sesuai dengan kebutuhan form kali ini.
+
+4. **Bagaimana cara kamu mengatur tema (theme) dalam aplikasi Flutter agar aplikasi yang dibuat konsisten?**
+
+   **Jawab:**  
+   Tema diatur pada `MaterialApp` menggunakan `ThemeData` untuk mengatur warna utama, latar belakang, serta gaya teks agar aplikasi tampak konsisten. Dengan menggunakan tema, setiap halaman memiliki tampilan dan nuansa yang seragam, sehingga memberikan pengalaman visual yang terstruktur.
+
+5. **Bagaimana cara kamu menangani navigasi dalam aplikasi dengan banyak halaman pada Flutter?**
+
+   **Jawab:**  
+   Navigasi diatur menggunakan widget `Navigator` dengan metode seperti `push()`, `pop()`, dan `pushReplacement()` untuk perpindahan antar halaman. `push()` menambah halaman ke dalam stack, sedangkan `pushReplacement()` menggantinya tanpa menambah stack, memastikan pengguna dapat kembali atau langsung berpindah halaman sesuai kebutuhan aplikasi.
+
