@@ -1,3 +1,4 @@
+import 'package:ngaji_kuy/screens/list_productentry.dart';
 import 'package:flutter/material.dart';
 import 'package:ngaji_kuy/screens/list.dart';
 import 'package:ngaji_kuy/screens/productentry_form.dart';
@@ -27,7 +28,7 @@ class LeftDrawer extends StatelessWidget {
                   ),
                   Padding(padding: EdgeInsets.all(8)),
                 Text(
-                    "E-commerce terbaik untuk bertransaksi dengan syariat islam",
+                    "----",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 15,
@@ -57,6 +58,18 @@ class LeftDrawer extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const ProductEntryFormPage(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.mood),
+            title: const Text('Lihat Product'),
+            onTap: () {
+                Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const QuranEntryPage(),
                 ),
               );
             },

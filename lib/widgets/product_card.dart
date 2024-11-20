@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ngaji_kuy/screens/list_productentry.dart';
 import 'package:ngaji_kuy/screens/productentry_form.dart';
 
 class ItemHomepage {
@@ -30,6 +31,15 @@ class ItemCard extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => const ProductEntryFormPage(),
+              ),
+            );
+          }
+          
+          if (item.name == "Lihat Daftar Product") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const QuranEntryPage(),
               ),
             );
           }

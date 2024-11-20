@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:ngaji_kuy/widgets/left_drawer.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:ngaji_kuy/screens/list.dart';
 
 class ProductEntryFormPage extends StatefulWidget {
   const ProductEntryFormPage({super.key});
@@ -11,16 +16,21 @@ class ProductEntryFormPage extends StatefulWidget {
 class _ProductEntryFormPageState extends State<ProductEntryFormPage> {
   final _formKey = GlobalKey<FormState>();
   String _name = "";
-  int _amount = 0;
+  int _price = 0;
   String _description = "";
+  // int _stock = 0;
+  // String _publisher = "";
+  // String _type = "";
 
   @override
   Widget build(BuildContext context) {
+    final request = context
+        .watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'Tambah Product Baru',
+            'Tambah Produk Baru',
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -62,12 +72,13 @@ class _ProductEntryFormPageState extends State<ProductEntryFormPage> {
                   },
                 ),
               ),
+              // Field Price Produk
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                    hintText: "Amount",
-                    labelText: "Amount",
+                    hintText: "Price",
+                    labelText: "Price",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -75,21 +86,22 @@ class _ProductEntryFormPageState extends State<ProductEntryFormPage> {
                   keyboardType: TextInputType.number,
                   onChanged: (String? value) {
                     setState(() {
-                      _amount = int.tryParse(value!) ?? 0;
+                      _price = int.tryParse(value!) ?? 0;
                     });
                   },
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return "Amount tidak boleh kosong!";
+                      return "Price tidak boleh kosong!";
                     }
-                    final amountValue = int.tryParse(value);
-                    if (amountValue == null || amountValue <= 0) {
-                      return "Amount harus berupa angka positif!";
+                    final priceValue = int.tryParse(value);
+                    if (priceValue == null || priceValue <= 0) {
+                      return "Price harus berupa angka positif!";
                     }
                     return null;
                   },
                 ),
               ),
+              // Field Deskripsi Produk
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -100,6 +112,7 @@ class _ProductEntryFormPageState extends State<ProductEntryFormPage> {
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
+                  maxLines: 5, 
                   onChanged: (String? value) {
                     setState(() {
                       _description = value!;
@@ -109,7 +122,7 @@ class _ProductEntryFormPageState extends State<ProductEntryFormPage> {
                     if (value == null || value.isEmpty) {
                       return "Description tidak boleh kosong!";
                     }
-                    if (value.length < 1) {
+                    if (value.length < 10) {
                       return "Description minimal 10 karakter!";
                     }
                     if (value.length > 2000) {
@@ -119,6 +132,7 @@ class _ProductEntryFormPageState extends State<ProductEntryFormPage> {
                   },
                 ),
               ),
+              // Tombol Save
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
@@ -129,40 +143,42 @@ class _ProductEntryFormPageState extends State<ProductEntryFormPage> {
                         Theme.of(context).colorScheme.primary,
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Product berhasil tersimpan'),
-                              content: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Name: $_name'),
-                                    Text('Amount: $_amount'),
-                                    Text('Description: $_description'),
-                                  ],
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  child: const Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    _formKey.currentState!.reset();
-                                    setState(() {
-                                      _name = "";
-                                      _amount = 0;
-                                      _description = "";
-                                    });
-                                  },
-                                ),
-                              ],
-                            );
-                          },
+                        final response = await request.postJson(
+                          "http://127.0.0.1:8000/create-flutter/",
+                          jsonEncode(<String, dynamic>{
+                            'name': _name,
+                            'price': _price,
+                            'description': _description,
+                            // 'stock': _stock,
+                            // 'publisher': _publisher,
+                            // 'type': _type,
+
+
+                          }),
                         );
+                        if (context.mounted) {
+                          if (response['status'] == 'success') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Produk baru berhasil disimpan!"),
+                              ),
+                            );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyHomePage()),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    "Terdapat kesalahan, silakan coba lagi."),
+                              ),
+                            );
+                          }
+                        }
                       }
                     },
                     child: const Text(

@@ -240,3 +240,50 @@ Kelas   : PBP D
    **Jawab:**  
    Navigasi diatur menggunakan widget `Navigator` dengan metode seperti `push()`, `pop()`, dan `pushReplacement()` untuk perpindahan antar halaman. `push()` menambah halaman ke dalam stack, sedangkan `pushReplacement()` menggantinya tanpa menambah stack, memastikan pengguna dapat kembali atau langsung berpindah halaman sesuai kebutuhan aplikasi.
 
+
+# Tugas 9
+# Tugas 9
+
+1. **Mengapa kita perlu membuat model untuk pengambilan atau pengiriman data JSON? Apakah akan terjadi error jika tidak membuat model terlebih dahulu?**
+
+   **Jawab:**  
+   Model berfungsi sebagai representasi terstruktur dari data yang dikirim atau diterima. Dengan menggunakan model, kita dapat memastikan setiap atribut data memiliki tipe yang benar, meminimalkan risiko error tipe data, dan membuat proses manipulasi data lebih mudah dan aman. Tanpa model, kita harus menangani JSON secara manual, yang meningkatkan risiko kesalahan seperti salah ketik atau ketidaksesuaian tipe data. Dalam proyek yang besar, hal ini dapat menyebabkan kode sulit dipelihara dan berantakan.
+
+2. **Jelaskan fungsi dari library http yang sudah kamu implementasikan pada tugas ini**
+
+   **Jawab:**  
+   Library `http` digunakan untuk mengirim permintaan HTTP seperti `GET`, `POST`, dan lainnya ke server. Library ini memfasilitasi pertukaran data dalam format JSON antara Flutter dan backend Django. Selain itu, library ini mendukung pengaturan header untuk autentikasi atau konfigurasi lainnya, memastikan komunikasi antara klien dan server berjalan lancar dan aman.
+
+3. **Jelaskan fungsi dari CookieRequest dan alasan instance-nya perlu dibagikan ke seluruh komponen Flutter**
+
+   **Jawab:**  
+   `CookieRequest` bertugas untuk mengelola cookie autentikasi berbasis sesi. Dengan `CookieRequest`, aplikasi dapat memastikan bahwa setiap permintaan HTTP menggunakan sesi yang sama, memungkinkan pengguna tetap login tanpa harus autentikasi ulang. Membagikan instance `CookieRequest` ke seluruh komponen memastikan konsistensi sesi dan efisiensi dalam pengelolaan autentikasi di seluruh aplikasi.
+
+4. **Jelaskan mekanisme pengiriman data mulai dari input hingga dapat ditampilkan di Flutter**
+
+   **Jawab:**  
+   - Pengguna memasukkan data ke elemen input seperti formulir di Flutter.  
+   - Data divalidasi secara lokal sebelum dikirimkan ke server.  
+   - Aplikasi mengubah data menjadi format JSON dan mengirimkan permintaan HTTP ke backend Django menggunakan library `http`.  
+   - Django memproses data, menyimpannya ke database, dan mengirimkan respons dalam format JSON.  
+   - Flutter menerima respons tersebut, memparsingnya menjadi objek Dart, lalu memperbarui UI menggunakan mekanisme seperti `setState`.
+
+5. **Jelaskan mekanisme autentikasi dari login, register, hingga logout**
+
+   **Jawab:**  
+   - **Login/Register**: Data akun dikirim dari Flutter ke Django melalui `POST`. Django memvalidasi data, menyimpan cookie sesi untuk login, atau membuat akun baru untuk register.  
+   - **Sesi Aktif**: Flutter menyimpan cookie sesi dan menggunakannya untuk semua permintaan autentikasi.  
+   - **Logout**: Permintaan dikirim dari Flutter ke Django untuk menghapus sesi, dan Flutter menghapus cookie sesi secara lokal.
+
+6. **Bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step?**
+
+   **Jawab:**  
+   - **Setup Proyek Django**: Membuat endpoint JSON untuk daftar item dan detail item, serta menambahkan middleware autentikasi berbasis cookie.  
+   - **Model dan View**: Membuat model untuk product dan memastikan struktur data JSON sesuai dengan model.  
+   - **Integrasi dengan Flutter**: Menggunakan `http` library untuk mengambil dan mengirim data. Menambahkan `CookieRequest` untuk autentikasi.  
+   - **Membangun UI**:  
+     - Halaman login dan registrasi dengan autentikasi Django.  
+     - Halaman daftar item yang menampilkan atribut seperti `name`, `price`, dan `description`.  
+     - Halaman detail item dengan semua atribut model dan tombol kembali.  
+   - **Filter Data**: Menambahkan filter untuk menampilkan item yang terasosiasi dengan pengguna yang login.  
+     
